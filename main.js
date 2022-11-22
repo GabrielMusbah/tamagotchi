@@ -5,77 +5,162 @@ class tamagotchi {
         this.fome = 100;
         this.sede = 100;
         this.brinca = 0;
+        this.dormindo = false;
+        this.vivo = true;
     }
 
-    get start() {
-        console.log(`Seja bem vindo ao Tamagotchi App, cuide bem do ${this.name}.`);
-        console.log(`Para mais informações de como cuidadar do seu Pet, digite: .help`);
-        this.startTimeOut();
-    };
+    start() {
+        if(this.vivo && !this.dormindo){
+            console.clear(); 
+            console.log(`Seja bem vindo ao Tamagotchi App, cuide bem do ${this.name}.`);
+            console.log(`Para mais informações de como cuidadar do seu Pet, digite: .help`);
+            this.startTimeOut();
+        } else {
+            this.alerta();
+        }
+    }
 
-    get status() {
+    help() {
+        if(this.vivo && !this.dormindo){
+            console.clear();
+            console.log(`Seu pet ${this.name}, possui funcionalidades para seu uso. Segue suas funcionalidades:\n .status\n .alimentar\n .hidratar\n .brincar`);
+        } else {
+            this.alerta();
+        }
+    }
+
+    status(){
+        if(this.vivo){
+            console.log(`Como esta seu Bichinho ${this.name}\n Fome: ${this.fome}%\n Sede: ${this.sede}% \n Vontade de brinca: ${this.brinca}%`);
+        } else {
+            this.alerta();
+        }
+    }
+
+    alimentar(){
+        if(this.vivo && !this.dormindo){
+            this.fome = 100;
+            this.var = false;
+            console.clear();
+            console.log(`O ${this.name} ta de buchinho cheio!`);
+        } else {
+            this.alerta();
+        }
+    }
+
+    hidratar(){
+        if(this.vivo && !this.dormindo){
+            this.sede = 100;
+            this.var = false;
+            console.clear();
+            console.log(`O ${this.name} ta bem hidratado!`);
+        } else {
+            this.alerta();
+        }
+    }
+
+    brincar(){
+        if(this.vivo && !this.dormindo){
+            this.brinca = 0;
+            this.var = false;
+            console.clear();
+            console.log(`O ${this.name} ta cansado de tanto buscar graveto`)
+        } else {
+            this.alerta();
+        }
+    }
+
+    dormir(){
+        if(this.dormindo){console.log('O seu bichinho ja esta dormindo')
+        } else {
+            if(!this.necessidade && this.vivo && !this.dormindo){
+                this.dormindo = true;
+                console.clear(); 
+                console.log(`O ${this.name} foi a mimir!`)
+            } else {
+                this.dormindo = false;
+                console.clear();
+                console.log(`O ${this.name} não pode dormir porque tem algo errado com ele: `)
+                this.status()
+            }
+        }
+    }
+
+    alerta(){
+        if(this.dormindo){console.clear(); console.log('Seu bichinho esta dormindo, use a função acordar, pra acordar ele');}
+        if(!this.vivo){console.clear(); console.log('Seu bichinho esta morto, use a função restart');}
+    }
+
+    necessidades(){
         console.clear();
-        console.log(`Informações dos Status do seu pet:\n Fome: ${this.fome}%\n Sede: ${this.sede}%\n Vontade de brincar: ${this.brinca}%`)
+        console.log(`O ${this.name} possui necessidades, cuide dele:`);
+        this.status();
     }
 
-    get help() {
+    matar(){
         console.clear();
-        console.log(`Seu pet ${this.name}, possui funcionalidades para seu uso. Segue suas funcionalidades:\n .status\n .alimentar\n .hidratar\n .brincar`);
+        this.vivo = false;
+        console.log(`O ${this.name} morreuuuuuuuuu! 😪`)
     }
 
-    get alimentar(){
+    restart(){
+        this.vivo = true;
         this.fome = 100;
-        console.clear();
-        console.log(`O ${this.name} ta de buchinho cheio!`)
-    }
-
-    get hidratar(){
         this.sede = 100;
-        console.clear();
-        console.log(`O ${this.name} ta bem hidratado!`)
-    }
-
-    get brincar(){
         this.brinca = 0;
         console.clear();
-        console.log(`O ${this.name} ta cansado de tanto buscar graveto`)
+        console.log(`O ${this.name} foi reiniciado!`)
     }
 
+    acordar(){
+        console.clear();
+        this.dormindo = false;
+        console.log(`O ${this.name} acordou!`)
+        if(this.necessidade){this.necessidades()}
+    }
 
     startTimeOut() {
+
         setInterval(() => {
             this.fome -= 1
         }, 1200);
+
         setInterval(() => {
             this.sede -= 1
         }, 2400);
+
         setInterval(() => {
             this.brinca += 1
         }, 3000);
 
         setInterval(() => {
-            this.fome50 = false
-            this.fome75 = false
-            this.fome90 = false
-
-            this.sede50 = false
-            this.sede75 = false
-            this.sede90 = false
-
-
-            this.brinca50 = false
-            this.brinca75 = false
-            this.brinca90 = false
-
-            if(this.fome <= 50){this.fome50 = true}
-            if(this.fome <= 75){this.fome75 = true}
-            if(this.fome <= 90){this.fome90 = true}
+            if(this.fome < 50 || this.sede < 50 || this.brinca > 50){
+                this.necessidade = true;
+            }else {
+                this.necessidade = false;
+            }
         },1000)
 
         setInterval(() => {
-            if(this.fome50 = true){console.log('teste fiote')}
-        },5000)
+            if((this.fome < 0 || this.sede < 0 || this.brinca > 100) && this.vivo){
+                this.matar();
+            }else {
+                this.vivo = true;
+            }
+        },1000)
 
+        setInterval(() => {
+            if(!this.necessidade && this.vivo && !this.dormindo){
+                this.dormir();
+            }
+        },3000);
+
+        setInterval(() => {
+            if(this.necessidade && this.dormindo && this.vivo){
+                this.acordar();
+            }
+        },1000);
+    
     }
 
 
