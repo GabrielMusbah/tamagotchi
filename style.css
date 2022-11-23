@@ -17,7 +17,7 @@ main {
 
 main article{
     border: 2px solid #3b434c;
-    width: 90%;
+    width: 900px;
     border-radius: 10px;
 }
 
@@ -119,8 +119,14 @@ footer {
 }
 
 footer section {
-    width: 80%;
+    width: 900px;
     text-align: center;
     border-top: 2px solid #2d333b;
     padding: 20px;
+}
+
+@media(max-width: 800px){
+    main article {
+        width: 90%;
+    }
 }
