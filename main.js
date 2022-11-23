@@ -5,23 +5,33 @@ class tamagotchi {
         this.fome = 10;
         this.sede = 100;
         this.brinca = 0;
+        this.sono = 0;
         this.dormindo = false;
         this.vivo = true;
+        this.ativo = false;
     }
 
     start() {
-        if(this.vivo && !this.dormindo){
+        if (this.ativo){
             console.clear(); 
-            console.log(`Seja bem vindo ao Tamagotchi App, cuide bem do ${this.name}.`);
-            console.log(`Para mais informações de como cuidadar do seu Pet, digite: .help`);
-            this.startTimeOut();
-        } else {
-            this.alerta();
+            console.log(`O seu bichinha ja esta ativo!`);
+            return;
         }
+
+        if(!this.vivo){
+            this.alerta();
+            return;
+        }
+
+        this.ativo = true;
+        console.clear(); 
+        console.log(`Seja bem vindo ao Tamagotchi App, cuide bem do ${this.name}.`);
+        console.log(`Para mais informações de como cuidadar do seu Pet, digite: .help`);
+        this.startTimeOut();
     }
 
     help() {
-        if(!this.vivo || this.dormindo){
+        if(!this.vivo){
             this.alerta();
             return;
         }
@@ -36,7 +46,8 @@ class tamagotchi {
             return;
         }
 
-        console.log(`Como esta seu Bichinho ${this.name}\n Fome: ${this.fome}%\n Sede: ${this.sede}% \n Vontade de brinca: ${this.brinca}%`);
+        console.clear();
+        console.log(`Como esta seu Bichinho ${this.name}\n Fome: ${this.fome}%\n Sede: ${this.sede}% \n Vontade de brinca: ${this.brinca}%\n Sono: ${this.sono}%`);
     }
 
     alimentar(){
@@ -78,7 +89,7 @@ class tamagotchi {
             return;
         
 
-        if(!this.necessidade && this.vivo && !this.dormindo){
+        if(!this.necessidade && this.vivo){
                 this.dormindo = true;
                 console.clear(); 
                 console.log(`O ${this.name} foi a mimir!`)
@@ -89,46 +100,6 @@ class tamagotchi {
                 this.status()
         }
 
-    }
-
-    verificarDormindo(){
-        if(!this.dormindo)
-            return false;
-        
-        console.clear();
-        console.log('O seu bichinho ja esta dormindo, use a função acordar, pra acordar ele');
-        return true;
-    }
-
-    verificarVivo(){
-        if(this.vivo)
-            return true;
-        
-        console.clear(); 
-        console.log('Seu bichinho esta morto, use a função restart');
-
-    }
-    
-
-    alerta(){
-        if(this.verificarDormindo())
-            return;
-        
-        if(this.verificarVivo()){
-            return;
-        }
-    }
-
-    necessidades(){
-        console.clear();
-        console.log(`O ${this.name} possui necessidades, cuide dele:`);
-        this.status();
-    }
-
-    matar(){
-        if(this.vivo){
-        this.vivo = false;
-        console.log(`O ${this.name} morreuuuuuuuuu! 😪`)}
     }
 
     restart(){
@@ -147,7 +118,48 @@ class tamagotchi {
         if(this.necessidade){this.necessidades()}
     }
 
-    startTimeOut() {
+    static verificarDormindo(){
+        if(!this.dormindo)
+            return false;
+        
+        console.clear();
+        console.log('O seu bichinho ja esta dormindo, use a função acordar, pra acordar ele');
+        return true;
+    }
+
+    static verificarVivo(){
+        if(this.vivo)
+            return true;
+        
+        console.clear(); 
+        console.log('Seu bichinho esta morto, use a função restart');
+        return false;
+    }
+    
+    static alerta(){
+        if(this.verificarDormindo())
+            return;
+        
+        if(this.verificarVivo()){
+            return;
+        }
+    }
+
+    static necessidades(){
+        console.clear();
+        console.log(`O ${this.name} possui necessidades, cuide dele:`);
+        this.status();
+    }
+
+    static matar(){
+        if(this.vivo){
+        this.vivo = false;
+        this.ativo = false;
+        console.log(`O ${this.name} morreuuuuuuuuu! 😪`)
+    }
+    }
+
+    static startTimeOut() {
 
         setInterval(() => {
             this.fome -= 1
