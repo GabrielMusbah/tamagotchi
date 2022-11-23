@@ -12,3 +12,5 @@ Regras:
 - O tamagotchi não deve dormir enquanto sente alguma necessidade;
 - Enquanto o tamagotchi estiver dormindo ele não pode comer, beber água ou brincar;
 - Depois de morto não deve haver mais interações, apenas restart; 
+
+.
